@@ -1,0 +1,24 @@
+# ALL THE VARIABLES IN THIS FILE MUST BE SPECIFIED IN THIS ORDER
+# The default container registry for this course is GitHub Container Registry (ghcr.io)
+# If you need to use a different registry, replace this.
+# CAUTION:  docker.io restricts the pull rate from free accounts
+#
+ZZ-CR-ID=ghcr.io
+#
+# Your userid for the container registry named above
+# As we are using GitHub's container registry, this is your GitHub username (lowercase)
+#
+ZZ-REG-ID=
+#
+# us-west-2 is the AWS region closest to Vancouver and therefore
+# will have the lowest geolatency.
+#
+ZZ-AWS-REGION=us-west-2
+#
+# Replace 'key_id' with the access key id for your IAM administrative id.
+#
+ZZ-AWS-ACCESS-KEY-ID=key_id
+#
+# Replace 'key_value' with the access key value for your IAM administrative id.
+#
+ZZ-AWS-SECRET-ACCESS-KEY=key_value

@@ -1,0 +1,27 @@
+#
+# SFU CMPT 756
+#
+# k8s yaml to provide ingress to the service mesh:
+#   1 Gateway - this is the point of control for what goes in or out of the
+#     mesh
+#   1 VirtualService - this opens up the routes to the microservices
+#
+# Notes:
+#
+# 1. Gateway's .spec.servers.port.number is where istio will serve the API.
+#    This means that you can move the service around publically irrespective of
+#    the actual implementation.
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: c756-gateway
+spec:
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"

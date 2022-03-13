@@ -1,0 +1,108 @@
+#
+# SFU CMPT 756
+#
+# k8s yaml to deploy:
+#   1 Deployment - this governs the logic (container)
+#   1 Service - this opens up the logic
+#   1 Service Account - this enable access control
+#
+# Notable observations:
+#
+# 1. the Service's .spec.ports[0] need to matches the Deployment's
+#    .spec.template.spec.containers[0].ports
+# 2. Deployment's .spec.template.spec.containers.livenessProbe & readinessProbe
+#    can be removed to clean up the logs
+#
+apiVersion: v1
+kind: Service
+metadata:
+  name: cmpt756db
+  labels:
+    app: cmpt756db
+spec:
+  ports:
+  - port: 30002
+    name: http
+  selector:
+    app: cmpt756db
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: svc-db
+  labels:
+    account: SVC_DB
+---
+# Define the loader ServiceAccount here
+# so that its token is ready by the time the
+# DB service starts.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: svc-loader
+  labels:
+    account: SVC_LOADER
+---
+# Define a Secret with a known name `svc-loader-token`, so that
+# we can refer to that name when specifying the DB container
+apiVersion: v1
+kind: Secret
+metadata:
+  name: svc-loader-token
+  annotations:
+    kubernetes.io/service-account.name: svc-loader
+type: kubernetes.io/service-account-token
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cmpt756db
+  labels:
+    app: cmpt756db
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cmpt756db
+      version: v1
+  template:
+    metadata:
+      name: database-pod
+      labels:
+        app: cmpt756db
+        version: v1
+    spec:
+      serviceAccountName: svc-db
+      containers:
+      - name: cmpt756db
+        image: 'ZZ-CR-ID/ZZ-REG-ID/cmpt756db:v1'
+        imagePullPolicy: Always
+        env:
+        - name: SVC_LOADER_TOKEN
+          valueFrom:
+            secretKeyRef:
+              # The known name of secret/svc-loader-token
+              name: svc-loader-token
+              key: token
+        envFrom:
+        - secretRef:
+            name: awscred
+        ports:
+        - containerPort: 30002
+        livenessProbe:
+          httpGet:
+            path: /api/v1/datastore/health
+            port: 30002
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          failureThreshold: 5
+        readinessProbe:
+          httpGet:
+            path: /api/v1/datastore/readiness
+            port: 30002
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 2
+          successThreshold: 1
+          failureThreshold: 5

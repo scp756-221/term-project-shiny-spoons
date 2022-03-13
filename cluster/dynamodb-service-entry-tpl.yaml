@@ -1,0 +1,40 @@
+# Label outgoing DynamoDB traffic in Istio.
+# This will display a DynamoDB node in Kiali.
+# The command `aws dynamodb describe-endpoints`
+# lists the endpoints for your active DynamoDB databases.
+# The command is only available in V2 of the AWS CLI
+# (check via `aws --version`).
+#
+apiVersion: networking.istio.io/v1beta1
+kind: ServiceEntry
+metadata:
+  name: dynamodb-ZZ-AWS-REGION
+spec:
+  hosts:
+  # See https://docs.aws.amazon.com/general/latest/gr/rande.html#ddb_region
+  - dynamodb.ZZ-AWS-REGION.amazonaws.com
+  location: MESH_EXTERNAL
+  ports:
+  - name: https
+    number: 443
+    protocol: HTTPS
+  resolution: DNS
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: dynamodb-ZZ-AWS-REGION
+spec:
+  hosts:
+  - dynamodb.ZZ-AWS-REGION.amazonaws.com
+  tls:
+  - match:
+    - port: 443
+      sniHosts:
+      - dynamodb.ZZ-AWS-REGION.amazonaws.com
+    route:
+    - destination:
+        host: dynamodb.ZZ-AWS-REGION.amazonaws.com
+        port:
+          number: 443
+      weight: 100

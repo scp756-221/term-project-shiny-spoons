@@ -1,0 +1,21 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: cmpt756db
+spec:
+  hosts:
+  - cmpt756db
+  # This is an internal service, so is not announced to the gateway.
+  # With no "gateways" field, the default applies: Make this service
+  # known internally to every other service.
+  http:
+  - match:
+    - uri:
+        prefix: /api/v1/datastore
+    rewrite:
+      uri: /api/v1/datastore
+    route:
+    - destination:
+        host: cmpt756db
+        port:
+          number: 30002
