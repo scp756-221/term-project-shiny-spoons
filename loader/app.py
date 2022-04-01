@@ -67,6 +67,24 @@ def create_song(artist, title, uuid):
     return (response.json())
 
 
+def add_metadata(link, country, duration, uuid):
+    """
+    Update song with it's metadata.
+    If a record already exists with the same artist and title,
+    the old UUID is replaced with this one.
+    """
+    url = db['name'] + '/load'
+    response = requests.post(
+        url,
+        auth=build_auth(),
+        json={"objtype": "music",
+              "VideoLink": link,
+              "ArtistCountry": country,
+              "SongDuration": duration,
+              "uuid": uuid})
+    return (response.json())
+
+
 def check_resp(resp, key):
     if 'http_status_code' in resp:
         return None
@@ -107,3 +125,16 @@ if __name__ == '__main__':
                 print('Error creating song {} {}, {}'.format(artist,
                                                              title,
                                                              uuid))
+    with open('{}/metadata/metadata.csv'.format(resource_dir), 'r') as inp:
+        rdr = csv.reader(inp)
+        next(rdr)  # Skip header
+        for link, country, duration, uuid in rdr:
+            print(link, country, duration, uuid)
+            resp = add_metadata(link.strip(),
+                                country.strip(),
+                                duration.strip(),
+                                uuid.strip())
+            resp = check_resp(resp, 'music_id')
+            if resp is None or resp != uuid:
+                print('Error creating song {} {} {}, {}'.format(
+                    link, country, duration, uuid))
