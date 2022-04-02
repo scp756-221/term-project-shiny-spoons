@@ -121,6 +121,7 @@ def get_metadata(music_id):
         headers={'Authorization': headers['Authorization']})
     return (response.json())
 
+
 # @bp.route('/update_metadata/<music_id>', methods=['PUT'])
 # def update_metadata(music_id):
 #     headers = request.headers
