@@ -89,7 +89,7 @@ def update_metadata(music_id):
         headers={'Authorization': headers['Authorization']})
     return (response.json())
 
-@bp.route('/delete_metadata/<music_id>, methods=['DELETE'])
+@bp.route('/update_metadata/<music_id>, methods=['DELETE'])
 def delete_metadata(music_id):
     headers = request.headers
     # check header here
@@ -105,7 +105,7 @@ def delete_metadata(music_id):
         headers={'Authorization': headers['Authorization']})
     return (response.json())
 
-@bp.route('/get_metadata/<music_id>, methods=['GET'])
+@bp.route('/update_metadata/<music_id>, methods=['GET'])
 def get_metadata(music_id):
     headers = request.headers
     # check header here
