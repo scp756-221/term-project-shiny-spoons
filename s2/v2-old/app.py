@@ -36,7 +36,8 @@ db = {
     "endpoint": [
         "read",
         "write",
-        "delete"
+        "delete",
+        "update"
     ]
 }
 bp = Blueprint('app', __name__)
@@ -56,6 +57,7 @@ def readiness():
 
 @bp.route('/', methods=['GET'])
 def list_all():
+    print('HERE')
     headers = request.headers
     # check header here
     if 'Authorization' not in headers:
@@ -68,6 +70,7 @@ def list_all():
 
 @bp.route('/<music_id>', methods=['GET'])
 def get_song(music_id):
+    print('HERE', " MUSIC ID")
     headers = request.headers
     # check header here
     if 'Authorization' not in headers:
