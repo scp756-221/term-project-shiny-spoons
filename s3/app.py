@@ -105,6 +105,23 @@ def delete_metadata(music_id):
         headers={'Authorization': headers['Authorization']})
     return (response.json())
 
+@bp.route('/update_metadata/<music_id>, methods=['GET'])
+def get_metadata(music_id):
+    headers = request.headers
+    # check header here
+    if 'Authorization' not in headers:
+        return Response(json.dumps({"error": "missing auth"}),
+                        status=401,
+                        mimetype='application/json')
+    payload = {"objtype": "music", "objkey": music_id}
+    url = db['name'] + '/' + db['endpoint'][3]
+    response = requests.get(
+        url,
+        params=payload,
+        headers={'Authorization': headers['Authorization']})
+    return (response.json())
+
+
 # @bp.route('/update_metadata/<music_id>', methods=['PUT'])
 # def update_metadata(music_id):
 #     headers = request.headers
