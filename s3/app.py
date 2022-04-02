@@ -89,7 +89,8 @@ def update_metadata(music_id):
         headers={'Authorization': headers['Authorization']})
     return (response.json())
 
-@bp.route('/update_metadata/<music_id>, methods=['DELETE'])
+
+@bp.route('/update_metadata/<music_id>', methods=['DELETE'])
 def delete_metadata(music_id):
     headers = request.headers
     # check header here
@@ -98,7 +99,7 @@ def delete_metadata(music_id):
                         status=401,
                         mimetype='application/json')
     payload = {"objtype": "music", "objkey": music_id}
-    url = db['name'] + '/' + db['endpoint'][3]
+    url = db['name'] + '/' + db['endpoint'][2]
     response = requests.delete(
         url,
         params=payload,
