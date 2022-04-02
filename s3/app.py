@@ -114,7 +114,7 @@ def get_metadata(music_id):
                         status=401,
                         mimetype='application/json')
     payload = {"objtype": "music", "objkey": music_id}
-    url = db['name'] + '/' + db['endpoint'][0]
+    url = db['name'] + '/' + db['endpoint'][3]
     response = requests.get(
         url,
         params=payload,
