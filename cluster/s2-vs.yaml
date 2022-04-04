@@ -11,37 +11,36 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
 metadata:
-  name: cmpt756s2
+  name: shiny-spoons-s2
 spec:
-  host: cmpt756s2
+  host: shiny-spoons-s2
   subsets:
-  - name: v1
-    labels:
-      version: v1
+    - name: v1
+      labels:
+        version: v1
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: cmpt756s2
+  name: shiny-spoons-s2
 spec:
   hosts:
-  # We do not know the hostname of traffic from this gateway, so
-  # apply this VS to every request entering it.
-  - "*"
+    # We do not know the hostname of traffic from this gateway, so
+    # apply this VS to every request entering it.
+    - "*"
   # As an externally-visible service, this only applies to the gateway
   gateways:
-  - c756-gateway
+    - c756-gateway
   http:
-  - match:
-    - uri:
-        prefix: /api/v1/music
-    rewrite:
-      uri: /api/v1/music
-    route:
-    - weight: 100
-      destination:
-        host: cmpt756s2
-        port:
-          number: 30001
-        subset: v1
-      
+    - match:
+        - uri:
+            prefix: /api/v1/music
+      rewrite:
+        uri: /api/v1/music
+      route:
+        - weight: 100
+          destination:
+            host: shiny-spoons-s2
+            port:
+              number: 30001
+            subset: v1

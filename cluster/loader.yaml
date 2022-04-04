@@ -19,7 +19,7 @@ spec:
       containers:
         - name: loader
           imagePullPolicy: Always
-          image: "ZZ-CR-ID/ZZ-REG-ID/shiny-spoons-loader:v1"
+          image: "ghcr.io/scp756-221/shiny-spoons-loader:v1"
           env:
             - name: SVC_LOADER_TOKEN
               valueFrom:

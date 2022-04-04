@@ -62,7 +62,7 @@ spec:
       serviceAccountName: svc-s1
       containers:
         - name: service1
-          image: "ZZ-CR-ID/ZZ-REG-ID/shiny-spoons-s1:latest"
+          image: "ghcr.io/scp756-221/shiny-spoons-s1:latest"
           imagePullPolicy: Always
           ports:
             - containerPort: 30000

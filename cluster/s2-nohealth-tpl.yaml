@@ -22,15 +22,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: cmpt756s2
+  name: shiny-spoons-s2
   labels:
-    app: cmpt756s2
+    app: shiny-spoons-s2
 spec:
   ports:
-  - port: 30001
-    name: http
+    - port: 30001
+      name: http
   selector:
-    app: cmpt756s2
+    app: shiny-spoons-s2
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -42,27 +42,27 @@ metadata:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cmpt756s2
+  name: shiny-spoons-s2
   labels:
-    app: cmpt756s2
+    app: shiny-spoons-s2
     version: v1
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: cmpt756s2
+      app: shiny-spoons-s2
       version: v1
   template:
     metadata:
       name: service2-pod
       labels:
-        app: cmpt756s2
+        app: shiny-spoons-s2
         version: v1
     spec:
       serviceAccountName: svc-s2
       containers:
-      - name: service2
-        image: 'ZZ-CR-ID/ZZ-REG-ID/cmpt756s2:latest'
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 30001
+        - name: service2
+          image: "ZZ-CR-ID/ZZ-REG-ID/shiny-spoons-s2:latest"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 30001
