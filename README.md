@@ -6,7 +6,10 @@
    Fill in the required values in the template variable file
    Copy the file cluster/tpl-vars-blank.txt to cluster/tpl-vars.txt and fill in all the required values in tpl-vars.txt. These include things like your AWS keys, your GitHub signon, and other identifying information. See the comments in that file for details. Note that you will need to have installed Gatling (https://gatling.io/open-source/start-testing/) first, because you will be entering its path in tpl-vars.txt.
 
-2. `make -f k8s-tpl.mak templates`
+2. Use this step only if ZZ-REG-ID is not pointed to `scp756-221`. Update ZZ-REG-ID to `ZZ-REG-ID` first in tpl-vars.txt  DO NOT commit this file
+```
+make -f k8s-tpl.mak templates
+```
 
 3. Open docker shell by running the below command. Make sure docker is running before executing the below command
 
