@@ -71,6 +71,10 @@ tools/shell.sh
 
 ```
 /home/k8s# cd mcli
+## if mcli is not built before. execute the build command first
+/home/k8s/mcli# make build-mcli
+
+## run mcli
 /home/k8s/mcli# make PORT=80 SERVER=EXTERNAL-IP run-mcli
 ```
 
