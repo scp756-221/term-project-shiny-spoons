@@ -15,9 +15,9 @@
 # Where possible, stodout outputs are tee into .out files for later review.
 
 # These will be filled in by template processor
-CREG=ghcr.io
-REGID=scp756-221
-AWS_REGION=us-west-2
+CREG=ZZ-CR-ID
+REGID=ZZ-REG-ID
+AWS_REGION=ZZ-AWS-REGION
 
 # Keep all the logs out of main directory
 LOG_DIR=logs
@@ -201,14 +201,14 @@ dynamodb-init: $(LOG_DIR)/dynamodb-init.log
 $(LOG_DIR)/dynamodb-init.log: cluster/cloudformationdynamodb.json
 	@# "|| true" suffix because command fails when stack already exists
 	@# (even with --on-failure DO_NOTHING, a nonzero error code is returned)
-	$(AWS) cloudformation create-stack --stack-name db-scp756-221 --template-body file://$< || true | tee $(LOG_DIR)/dynamodb-init.log
+	$(AWS) cloudformation create-stack --stack-name db-ZZ-REG-ID --template-body file://$< || true | tee $(LOG_DIR)/dynamodb-init.log
 	# Must give DynamoDB time to create the tables before running the loader
 	sleep 20
 
 # --- dynamodb-stop: Stop the AWS DynamoDB service
 #
 dynamodb-clean:
-	$(AWS) cloudformation delete-stack --stack-name db-scp756-221 || true | tee $(LOG_DIR)/dynamodb-clean.log
+	$(AWS) cloudformation delete-stack --stack-name db-ZZ-REG-ID || true | tee $(LOG_DIR)/dynamodb-clean.log
 	@# Rename DynamoDB log so dynamodb-init will force a restart but retain the log
 	/bin/mv -f $(LOG_DIR)/dynamodb-init.log $(LOG_DIR)/dynamodb-init-old.log || true
 

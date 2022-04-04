@@ -22,7 +22,7 @@ loader_token = os.getenv('SVC_LOADER_TOKEN')
 INITIAL_WAIT_SEC = 1
 
 db = {
-    "name": "http://cmpt756db:30002/api/v1/datastore",
+    "name": "http://shiny-spoons-db:30002/api/v1/datastore",
 }
 
 

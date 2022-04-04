@@ -1,23 +1,23 @@
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
-  name: cmpt756db
+  name: shiny-spoons-db
 spec:
   hosts:
-  - cmpt756db
+    - shiny-spoons-db
   http:
-  - match:
-    - uri:
-        prefix: /api/v1/datastore
-    rewrite:
-      uri: /api/v1/datastore
-    route:
-    - destination:
-        host: cmpt756db
-        port:
-          number: 30002
-    fault:
-      abort:
-        httpStatus: 500
-        percentage:
-          value: 10
+    - match:
+        - uri:
+            prefix: /api/v1/datastore
+      rewrite:
+        uri: /api/v1/datastore
+      route:
+        - destination:
+            host: shiny-spoons-db
+            port:
+              number: 30002
+      fault:
+        abort:
+          httpStatus: 500
+          percentage:
+            value: 10

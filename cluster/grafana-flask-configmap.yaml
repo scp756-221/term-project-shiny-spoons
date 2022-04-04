@@ -6,8 +6,8 @@ kind: ConfigMap
 metadata:
   name: c756-dashboard
   labels:
-     # Sidecar loads all ConfigMaps with this label
-     grafana_dashboard: "1"
+    # Sidecar loads all ConfigMaps with this label
+    grafana_dashboard: "1"
 data:
   k8s-dashboard.json: |-
     {
@@ -595,23 +595,23 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "sum(rate(flask_http_request_duration_seconds_sum{status=\"200\",service=\"cmpt756db\"}[1m]))\n/\nsum(rate(flask_http_request_duration_seconds_count{status=\"200\",service=\"cmpt756db\"}[1m]))",
+              "expr": "sum(rate(flask_http_request_duration_seconds_sum{status=\"200\",service=\"shiny-spoons-db\"}[1m]))\n/\nsum(rate(flask_http_request_duration_seconds_count{status=\"200\",service=\"shiny-spoons-db\"}[1m]))",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 1,
-              "legendFormat": "cmpt756db",
+              "legendFormat": "shiny-spoons-db",
               "refId": "A"
             },
             {
-              "expr": "sum(rate(flask_http_request_duration_seconds_sum{status=\"200\",service=\"cmpt756s1\"}[1m]))\n/\nsum(rate(flask_http_request_duration_seconds_count{status=\"200\",service=\"cmpt756s1\"}[1m]))",
+              "expr": "sum(rate(flask_http_request_duration_seconds_sum{status=\"200\",service=\"shiny-spoons-s1\"}[1m]))\n/\nsum(rate(flask_http_request_duration_seconds_count{status=\"200\",service=\"shiny-spoons-s1\"}[1m]))",
               "interval": "",
-              "legendFormat": "cmpt756s1",
+              "legendFormat": "shiny-spoons-s1",
               "refId": "B"
             },
             {
-              "expr": "sum(rate(flask_http_request_duration_seconds_sum{status=\"200\",service=\"cmpt756s2\"}[1m]))\n/\nsum(rate(flask_http_request_duration_seconds_count{status=\"200\",service=\"cmpt756s2\"}[1m]))",
+              "expr": "sum(rate(flask_http_request_duration_seconds_sum{status=\"200\",service=\"shiny-spoons-s2\"}[1m]))\n/\nsum(rate(flask_http_request_duration_seconds_count{status=\"200\",service=\"shiny-spoons-s2\"}[1m]))",
               "interval": "",
-              "legendFormat": "cmpt756s2",
+              "legendFormat": "shiny-spoons-s2",
               "refId": "C"
             }
           ],
@@ -713,23 +713,23 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "histogram_quantile(0.5, sum by (le) (rate(flask_http_request_duration_seconds_bucket{service=\"cmpt756db\",status=\"200\"}[1m])))",
+              "expr": "histogram_quantile(0.5, sum by (le) (rate(flask_http_request_duration_seconds_bucket{service=\"shiny-spoons-db\",status=\"200\"}[1m])))",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 1,
-              "legendFormat": "cmpt756db",
+              "legendFormat": "shiny-spoons-db",
               "refId": "A"
             },
             {
-              "expr": "histogram_quantile(0.5, sum by (le) (rate(flask_http_request_duration_seconds_bucket{service=\"cmpt756s1\",status=\"200\"}[1m])))",
+              "expr": "histogram_quantile(0.5, sum by (le) (rate(flask_http_request_duration_seconds_bucket{service=\"shiny-spoons-s1\",status=\"200\"}[1m])))",
               "interval": "",
-              "legendFormat": "cmpt756s1",
+              "legendFormat": "shiny-spoons-s1",
               "refId": "C"
             },
             {
-              "expr": "histogram_quantile(0.5, sum by (le) (rate(flask_http_request_duration_seconds_bucket{service=\"cmpt756s2\",status=\"200\"}[1m])))",
+              "expr": "histogram_quantile(0.5, sum by (le) (rate(flask_http_request_duration_seconds_bucket{service=\"shiny-spoons-s2\",status=\"200\"}[1m])))",
               "interval": "",
-              "legendFormat": "cmpt756s2",
+              "legendFormat": "shiny-spoons-s2",
               "refId": "B"
             }
           ],
@@ -1035,23 +1035,23 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "histogram_quantile(0.9, sum by (le) (rate(flask_http_request_duration_seconds_bucket{service=\"cmpt756db\",status=\"200\"}[1m])))",
+              "expr": "histogram_quantile(0.9, sum by (le) (rate(flask_http_request_duration_seconds_bucket{service=\"shiny-spoons-db\",status=\"200\"}[1m])))",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 1,
-              "legendFormat": "cmpt756db",
+              "legendFormat": "shiny-spoons-db",
               "refId": "A"
             },
             {
-              "expr": "histogram_quantile(0.9, sum by (le) (rate(flask_http_request_duration_seconds_bucket{service=\"cmpt756s1\",status=\"200\"}[1m])))",
+              "expr": "histogram_quantile(0.9, sum by (le) (rate(flask_http_request_duration_seconds_bucket{service=\"shiny-spoons-s1\",status=\"200\"}[1m])))",
               "interval": "",
-              "legendFormat": "cmpt756s1",
+              "legendFormat": "shiny-spoons-s1",
               "refId": "B"
             },
             {
-              "expr": "histogram_quantile(0.9, sum by (le) (rate(flask_http_request_duration_seconds_bucket{service=\"cmpt756s2\",status=\"200\"}[1m])))",
+              "expr": "histogram_quantile(0.9, sum by (le) (rate(flask_http_request_duration_seconds_bucket{service=\"shiny-spoons-s2\",status=\"200\"}[1m])))",
               "interval": "",
-              "legendFormat": "cmpt756s2",
+              "legendFormat": "shiny-spoons-s2",
               "refId": "C"
             }
           ],

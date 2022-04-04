@@ -32,7 +32,7 @@ metrics.info('app_info', 'User process')
 bp = Blueprint('app', __name__)
 
 db = {
-    "name": "http://cmpt756db:30002/api/v1/datastore",
+    "name": "http://shiny-spoons-db:30002/api/v1/datastore",
     "endpoint": [
         "read",
         "write",
@@ -89,7 +89,8 @@ def update_metadata(music_id):
         headers={'Authorization': headers['Authorization']})
     return (response.json())
 
-@bp.route('/update_metadata/<music_id>, methods=['DELETE'])
+
+@bp.route('/update_metadata/<music_id>', methods=['DELETE'])
 def delete_metadata(music_id):
     headers = request.headers
     # check header here
@@ -105,7 +106,8 @@ def delete_metadata(music_id):
         headers={'Authorization': headers['Authorization']})
     return (response.json())
 
-@bp.route('/update_metadata/<music_id>, methods=['GET'])
+
+@bp.route('/update_metadata/<music_id>', methods=['GET'])
 def get_metadata(music_id):
     headers = request.headers
     # check header here

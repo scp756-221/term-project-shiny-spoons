@@ -1,3 +1,4 @@
+#
 # SFU CMPT 756
 #
 # Kubernetes yaml to deploy pods as Endpoints of a Service.
@@ -14,28 +15,31 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: shiny-spoons-s2-v2
+  name: shiny-spoons-s2-v1
   labels:
     app: shiny-spoons-s2
-    version: v2
+    version: v1
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: shiny-spoons-s2
-      version: v2
+      version: v1
   template:
     metadata:
       name: service2-pod
       labels:
         app: shiny-spoons-s2
-        version: v2
+        version: v1
     spec:
       serviceAccountName: svc-s2
       containers:
         - name: shiny-spoons-s2
-          image: "ZZ-CR-ID/ZZ-REG-ID/shiny-spoons-s2:v2"
+          image: "ghcr.io/scp756-221/shiny-spoons-s2:v1"
           imagePullPolicy: Always
+          env:
+            - name: EXER
+              value: v1
           ports:
             - containerPort: 30001
           livenessProbe:
