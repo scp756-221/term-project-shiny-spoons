@@ -99,7 +99,7 @@ def delete_metadata(music_id):
                         status=401,
                         mimetype='application/json')
     payload = {"objtype": "music", "objkey": music_id}
-    url = db['name'] + '/' + db['endpoint'][3]
+    url = db['name'] + '/' + db['endpoint'][2]
     response = requests.delete(
         url,
         params=payload,
