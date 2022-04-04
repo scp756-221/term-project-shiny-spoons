@@ -11,9 +11,9 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
 metadata:
-  name: cmpt756s3
+  name: shiny-spoons-s3
 spec:
-  host: cmpt756s3
+  host: shiny-spoons-s3
   subsets:
     - name: v1
       labels:
@@ -22,7 +22,7 @@ spec:
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: cmpt756s3
+  name: shiny-spoons-s3
 spec:
   hosts:
     # We do not know the hostname of traffic from this gateway, so
@@ -40,7 +40,7 @@ spec:
       route:
         - weight: 100
           destination:
-            host: cmpt756s3
+            host: shiny-spoons-s3
             port:
               number: 30003
             subset: v1

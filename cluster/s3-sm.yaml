@@ -1,9 +1,9 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: cmpt756s3
+  name: shiny-spoons-s3
   labels:
-    app: cmpt756s3
+    app: shiny-spoons-s3
     release: c756
 spec:
   namespaceSelector:
@@ -11,7 +11,7 @@ spec:
       - c756ns
   selector:
     matchLabels:
-      app: cmpt756s3
+      app: shiny-spoons-s3
   endpoints:
     - port: http
       path: /metrics

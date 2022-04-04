@@ -22,15 +22,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: cmpt756s3
+  name: shiny-spoons-s3
   labels:
-    app: cmpt756s3
+    app: shiny-spoons-s3
 spec:
   ports:
     - port: 30003
       name: http
   selector:
-    app: cmpt756s3
+    app: shiny-spoons-s3
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -42,27 +42,27 @@ metadata:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cmpt756s3
+  name: shiny-spoons-s3
   labels:
-    app: cmpt756s3
+    app: shiny-spoons-s3
     version: v1
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: cmpt756s3
+      app: shiny-spoons-s3
       version: v1
   template:
     metadata:
       name: service3-pod
       labels:
-        app: cmpt756s3
+        app: shiny-spoons-s3
         version: v1
     spec:
       serviceAccountName: svc-s3
       containers:
         - name: service3
-          image: "ghcr.io/gonick/cmpt756s3:latest"
+          image: "ghcr.io/scp756-221/shiny-spoons-s3:latest"
           imagePullPolicy: Always
           ports:
             - containerPort: 30003

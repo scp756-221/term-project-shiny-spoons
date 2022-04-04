@@ -15,46 +15,46 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cmpt756s2-v1
+  name: shiny-spoons-s2-v1
   labels:
-    app: cmpt756s2
+    app: shiny-spoons-s2
     version: v1
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: cmpt756s2
+      app: shiny-spoons-s2
       version: v1
   template:
     metadata:
       name: service2-pod
       labels:
-        app: cmpt756s2
+        app: shiny-spoons-s2
         version: v1
     spec:
       serviceAccountName: svc-s2
       containers:
-      - name: cmpt756s2
-        image: 'ZZ-CR-ID/ZZ-REG-ID/cmpt756s2:v1'
-        imagePullPolicy: Always
-        env:
-          - name: EXER
-            value: v1
-        ports:
-        - containerPort: 30001
-        livenessProbe:
-          httpGet:
-            path: /api/v1/music/health
-            port: 30001
-          initialDelaySeconds: 10
-          periodSeconds: 5
-          failureThreshold: 5
-        readinessProbe:
-          httpGet:
-            path: /api/v1/music/readiness
-            port: 30001
-          initialDelaySeconds: 10
-          periodSeconds: 5
-          timeoutSeconds: 2
-          successThreshold: 1
-          failureThreshold: 5
+        - name: shiny-spoons-s2
+          image: "ZZ-CR-ID/ZZ-REG-ID/shiny-spoons-s2:v1"
+          imagePullPolicy: Always
+          env:
+            - name: EXER
+              value: v1
+          ports:
+            - containerPort: 30001
+          livenessProbe:
+            httpGet:
+              path: /api/v1/music/health
+              port: 30001
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            failureThreshold: 5
+          readinessProbe:
+            httpGet:
+              path: /api/v1/music/readiness
+              port: 30001
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 2
+            successThreshold: 1
+            failureThreshold: 5

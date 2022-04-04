@@ -14,27 +14,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cmpt756s3-v1
+  name: shiny-spoons-s3-v1
   labels:
-    app: cmpt756s3
+    app: shiny-spoons-s3
     version: v1
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: cmpt756s3
+      app: shiny-spoons-s3
       version: v1
   template:
     metadata:
       name: service3-pod
       labels:
-        app: cmpt756s3
+        app: shiny-spoons-s3
         version: v1
     spec:
       serviceAccountName: svc-s3
       containers:
-        - name: cmpt756s3
-          image: "ghcr.io/gonick/cmpt756s3:v1"
+        - name: shiny-spoons-s3
+          image: "ghcr.io/scp756-221/shiny-spoons-s3:v1"
           imagePullPolicy: Always
           ports:
             - containerPort: 30003

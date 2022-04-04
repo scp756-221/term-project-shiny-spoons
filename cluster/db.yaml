@@ -76,7 +76,7 @@ spec:
       serviceAccountName: svc-db
       containers:
         - name: shiny-spoons-db
-          image: "ZZ-CR-ID/ZZ-REG-ID/shiny-spoons-db:v1"
+          image: "ghcr.io/scp756-221/shiny-spoons-db:v1"
           imagePullPolicy: Always
           env:
             - name: SVC_LOADER_TOKEN
