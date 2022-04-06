@@ -7,6 +7,7 @@ Metadata micro service
 import logging
 import sys
 import time
+import json
 
 # Installed packages
 from flask import Blueprint
@@ -107,8 +108,8 @@ def delete_metadata(music_id):
     return (response.json())
 
 
-@bp.route('/update_metadata/<music_id>', methods=['GET'])
-def get_metadata(music_id):
+@bp.route('/get_song_artist/<music_id>', methods=['GET'])
+def get_song(music_id):
     headers = request.headers
     # check header here
     if 'Authorization' not in headers:
@@ -116,44 +117,26 @@ def get_metadata(music_id):
                         status=401,
                         mimetype='application/json')
     payload = {"objtype": "music", "objkey": music_id}
-    url = db['name'] + '/' + db['endpoint'][3]
+    url = db['name'] + '/' + db['endpoint'][0]
     response = requests.get(
         url,
         params=payload,
         headers={'Authorization': headers['Authorization']})
-    return (response.json())
 
-
-# @bp.route('/update_metadata/<music_id>', methods=['PUT'])
-# def update_metadata(music_id):
-#     headers = request.headers
-#     # check header here
-#     if 'Authorization' not in headers:
-#         return Response(json.dumps({"error": "missing auth"}),
-#                         status=401,
-#                         mimetype='application/json')
-#     try:
-#         content = request.get_json()
-#         link = content['video_link']
-#         country = content['artist_country']
-#         duration = content['song_duration']
-#     except Exception:
-#         return json.dumps({"message": "error reading arguments"})
-#     payload = {"objtype": "music", "objkey": music_id}
-#     url = db['name'] + '/load'  # + db['endpoint'][3]
-#     response = requests.post(
-#         url,
-#         # params=payload,
-#         json={
-#             "objtype": "music",
-#             "VideoLink": link,
-#             "ArtistCountry": country,
-#             "SongDuration": duration,
-#             "uuid": music_id
-#         },
-#         headers={'Authorization': headers['Authorization']})
-#     print(response)
-#     return (response.json())
+    if response.status_code != 200:
+        response = {
+            "Count": 0,
+            "Items": []
+        }
+        return app.make_response((response, 404))
+    item = response.json()['Items'][0]
+    obj = {
+        'Artist': item['Artist'],
+        'Artist Country': item['ArtistCountry'],
+        'Song': item['SongTitle'],
+        'Song Duration': item['SongDuration'],
+    }
+    return app.make_response((obj, 200))
 
 
 # All database calls will have this prefix.  Prometheus metric
