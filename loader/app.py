@@ -73,15 +73,15 @@ def add_metadata(link, country, duration, uuid):
     If a record already exists with the same artist and title,
     the old UUID is replaced with this one.
     """
-    url = db['name'] + '/load'
-    response = requests.post(
-        url,
+    # url = db['name'] + '/load'
+    url = 'http://shiny-spoons-s3:30003/api/v1/metadata/update_metadata/'
+    response = requests.put(
+        url+uuid,
         auth=build_auth(),
-        json={"objtype": "music",
-              "VideoLink": link,
-              "ArtistCountry": country,
-              "SongDuration": duration,
-              "uuid": uuid})
+        json={
+            "video_link": link,
+            "artist_country": country,
+            "song_duration": duration})
     return (response.json())
 
 
@@ -134,7 +134,3 @@ if __name__ == '__main__':
                                 country.strip(),
                                 duration.strip(),
                                 uuid.strip())
-            resp = check_resp(resp, 'music_id')
-            if resp is None or resp != uuid:
-                print('Error creating song {} {} {}, {}'.format(
-                    link, country, duration, uuid))
