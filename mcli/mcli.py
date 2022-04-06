@@ -216,6 +216,25 @@ Enter 'help' for command list.
         )
         print(r.json())
 
+    def do_get_song_artist(self, arg):
+        """
+       update song metadata
+
+        Parameters
+        ----------
+        music_id: string
+
+        Both parameters can be quoted by either single or double quotes.
+
+        """
+        url = get_url_metadata(self.name, self.port) + 'get_song_artist/'
+        args = parse_quoted_strings(arg)
+        r = requests.get(
+            url + args[0].strip(),
+            headers={'Authorization': DEFAULT_AUTH}
+        )
+        print(r.json())
+
 
 if __name__ == '__main__':
     args = parse_args()
