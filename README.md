@@ -6,7 +6,8 @@
    Fill in the required values in the template variable file
    Copy the file cluster/tpl-vars-blank.txt to cluster/tpl-vars.txt and fill in all the required values in tpl-vars.txt. These include things like your AWS keys, your GitHub signon, and other identifying information. See the comments in that file for details. Note that you will need to have installed Gatling (https://gatling.io/open-source/start-testing/) first, because you will be entering its path in tpl-vars.txt.
 
-2. Use this step only if ZZ-REG-ID is not pointed to `scp756-221`. Update ZZ-REG-ID to `scp756-221` first in tpl-vars.txt  DO NOT commit this file
+2. Use this step only if ZZ-REG-ID is not pointed to `scp756-221`. Update ZZ-REG-ID to `scp756-221` first in tpl-vars.txt DO NOT commit this file
+
 ```
 make -f k8s-tpl.mak templates
 ```
@@ -49,28 +50,28 @@ tools/shell.sh
 
 ```
 /home/k8s# make -f k8s.mak cri
-/home/k8s# make -f k8s.mak gw db s2 s3
+/home/k8s# make -f k8s.mak gw db s1 s2 s3
 ```
 
-8. In a separate terminal run k9s for viewing logs. Make sure to run inside shell
+9. In a separate terminal run k9s for viewing logs. Make sure to run inside shell
 
 ```
 /home/k8s# k9s
 ```
 
-9. Run the loader service on previous terminal
+10. Run the loader service on previous terminal
 
 ```
 /home/k8s# make -f k8s.mak loader
 ```
 
-10. Get external ip address
+11. Get external ip address
 
 ```
 /home/k8s# kubectl -n istio-system get service istio-ingressgateway | cut -c -140
 ```
 
-11. Use this external ip in MCLI client side application to invoke commands
+12. Use this external ip in MCLI client side application to invoke commands
 
 ```
 /home/k8s# cd mcli
@@ -81,7 +82,7 @@ tools/shell.sh
 /home/k8s/mcli# make PORT=80 SERVER=EXTERNAL-IP run-mcli
 ```
 
-12. execude below command to test in mcli
+13. execude below command to test in mcli
 
 ```
 read 6ecfafd0-8a35-4af6-a9e2-cbd79b3abeea
@@ -91,4 +92,23 @@ Fixing and redeploying a service. use rollout-{service_name}. e.g below
 
 ```
 /home/k8s# make -f k8s.mak rollout-s3
+```
+
+14. Run Gatling
+
+```
+/home/k8s# ./tools/gatling.sh 1500 ReadBothVaryingSim
+
+#To stop the Gatling job, enter
+#   $ kill -9 255
+#The Gatling job will continue running until it is stopped via kill -9 or
+#the container is exited.
+```
+
+copy kill command echoed by Gatling.
+
+15. Stop Amazon EKS cluster
+
+```
+make -f eks.mak stop
 ```
