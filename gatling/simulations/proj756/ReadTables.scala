@@ -54,6 +54,18 @@ object RUser {
 
 }
 
+object RMetadata {
+
+  val feeder = csv("metadata.csv").eager.circular
+
+  val rmetadata = forever("i") {
+    feed(feeder)
+    .exec(http("RMetadata ${i}")
+      .get("/api/v1/metadata/get_song_artist/${UUID}"))
+    .pause(1)
+  }
+}
+
 /*
   After one S1 read, pause a random time between 1 and 60 s
 */
@@ -83,6 +95,17 @@ object RMusicVarying {
   }
 }
 
+object RMetadataVarying {
+  val feeder = csv("metadata.csv").eager.circular
+
+  val rmetadata = forever("i") {
+    feed(feeder)
+    .exec(http("RMetadataVarying ${i}")
+      .get("/api/v1/metadata/get_song_artist/${UUID}"))
+    .pause(1, 60)
+  }
+}
+
 /*
   Failed attempt to interleave reads from User and Music tables.
   The Gatling EDSL only honours the second (Music) read,
@@ -102,6 +125,11 @@ object RBoth {
     feed(m_feeder)
     .exec(http("RMusic ${i}")
       .get("/api/v1/music/${UUID}"))
+      .pause(1)
+
+    feed(m_feeder)
+    .exec(http("RMusic ${i}")
+      .get("/api/v1/metadata/get_song_artist/${UUID}"))
       .pause(1)
   }
 
@@ -134,6 +162,15 @@ class ReadMusicSim extends ReadTablesSim {
   ).protocols(httpProtocol)
 }
 
+class ReadMetadataSim extends ReadTablesSim {
+  val scnReadMusic = scenario("ReadMetadata")
+    .exec(RMetadata.rmetadata)
+
+  setUp(
+    scnReadMusic.inject(atOnceUsers(Utility.envVarToInt("USERS", 1)))
+  ).protocols(httpProtocol)
+}
+
 /*
   Read both services concurrently at varying rates.
   Ramp up new users one / 10 s until requested USERS
@@ -146,12 +183,16 @@ class ReadBothVaryingSim extends ReadTablesSim {
   val scnReadUV = scenario("ReadUserVarying")
     .exec(RUserVarying.ruser)
 
-  val users = Utility.envVarToInt("USERS", 10)
+  val scnReadMetaV = scenario("ReadMetadataVarying")
+    .exec(RMetadataVarying.rmetadata)
+
+  val users = Utility.envVarToInt("USERS", 1500)
 
   setUp(
     // Add one user per 10 s up to specified value
-    scnReadMV.inject(rampConcurrentUsers(1).to(users).during(10*users)),
-    scnReadUV.inject(rampConcurrentUsers(1).to(users).during(10*users))
+    scnReadMV.inject(rampConcurrentUsers(1).to(users).during(1*users)),
+    scnReadUV.inject(rampConcurrentUsers(1).to(users).during(1*users)),
+    scnReadMetaV.inject(rampConcurrentUsers(1).to(users).during(1*users))
   ).protocols(httpProtocol)
 }
 
