@@ -613,6 +613,12 @@ data:
               "interval": "",
               "legendFormat": "shiny-spoons-s2",
               "refId": "C"
+            },
+            {
+              "expr": "sum(rate(flask_http_request_duration_seconds_sum{status=\"200\",service=\"shiny-spoons-s3\"}[1m]))\n/\nsum(rate(flask_http_request_duration_seconds_count{status=\"200\",service=\"shiny-spoons-s3\"}[1m]))",
+              "interval": "",
+              "legendFormat": "shiny-spoons-s3",
+              "refId": "D"
             }
           ],
           "thresholds": [],
@@ -731,6 +737,12 @@ data:
               "interval": "",
               "legendFormat": "shiny-spoons-s2",
               "refId": "B"
+            },
+            {
+              "expr": "histogram_quantile(0.5, sum by (le) (rate(flask_http_request_duration_seconds_bucket{service=\"shiny-spoons-s3\",status=\"200\"}[1m])))",
+              "interval": "",
+              "legendFormat": "shiny-spoons-s3",
+              "refId": "D"
             }
           ],
           "thresholds": [],
@@ -1053,6 +1065,12 @@ data:
               "interval": "",
               "legendFormat": "shiny-spoons-s2",
               "refId": "C"
+            },
+            {
+              "expr": "histogram_quantile(0.9, sum by (le) (rate(flask_http_request_duration_seconds_bucket{service=\"shiny-spoons-s3\",status=\"200\"}[1m])))",
+              "interval": "",
+              "legendFormat": "shiny-spoons-s3",
+              "refId": "D"
             }
           ],
           "thresholds": [],
