@@ -94,7 +94,22 @@ Fixing and redeploying a service. use rollout-{service_name}. e.g below
 /home/k8s# make -f k8s.mak rollout-s3
 ```
 
-14. Run Gatling
+14. Run Grafana
+
+#Provision the cluster
+
+```
+/home/k8s# make -f k8s.mak provision
+
+```
+
+#Get the Grafana URL and paste it on browser to access the dashboard
+
+```
+/home/k8s# make -f k8s.mak grafana-url
+```
+
+15. Run Gatling
 
 ```
 /home/k8s# ./tools/gatling.sh 1500 ReadBothVaryingSim
