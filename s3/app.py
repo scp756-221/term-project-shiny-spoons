@@ -129,14 +129,22 @@ def get_song(music_id):
             "Items": []
         }
         return app.make_response((response, 404))
-    item = response.json()['Items'][0]
-    obj = {
-        'Artist': item['Artist'],
-        'Artist Country': item['ArtistCountry'],
-        'Song': item['SongTitle'],
-        'Song Duration': item['SongDuration'],
-    }
-    return app.make_response((obj, 200))
+    items = response.json()['Items']
+    if len(items):
+        item = response.json()['Items'][0]
+        obj = {
+            'Artist': item['Artist'],
+            'Artist Country': item['ArtistCountry'],
+            'Song': item['SongTitle'],
+            'Song Duration': item['SongDuration'],
+        }
+        return app.make_response((obj, 200))
+    else:
+        response = {
+            "Count": 0,
+            "Items": []
+        }
+        return app.make_response((response, 404))
 
 
 # All database calls will have this prefix.  Prometheus metric
