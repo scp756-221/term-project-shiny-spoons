@@ -100,7 +100,6 @@ Fixing and redeploying a service. use rollout-{service_name}. e.g below
 
 ```
 /home/k8s# make -f k8s.mak provision
-
 ```
 
 #Get the Grafana URL and paste it on browser to access the dashboard
