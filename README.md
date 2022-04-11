@@ -119,7 +119,7 @@ Fixing and redeploying a service. use rollout-{service_name}. e.g below
 #the container is exited.
 ```
 
-copy kill command echoed by Gatling.
+copy kill command echoed by Gatling
 
 15. Stop Amazon EKS cluster
 
