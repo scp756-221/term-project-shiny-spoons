@@ -1,0 +1,47 @@
+name: CI test of v1.1 music 
+
+on:
+  push:
+    paths:
+      - db/*
+      - s1/*
+      - s2/v1.1/*
+      - ci/v1.1/*
+      - .github/workflows/ci-system-v1.1.yaml
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_COMPOSE_VER: v2.2.2
+      ARCH_CLASS: x86_64
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install docker-compose v2.2.2
+        # As of Dec 2021, the only way to guarantee that we have docker-compose v2.2.2 is to install it ourselves
+        # (See answer to https://github.com/actions/virtual-environments/issues/4657)
+        # The GitHub docs claim that docker-compose 2.2.2 is available in the Unbuntu 20.04 runner but do not provide
+        # any documentation for how to invoke it.
+        run: |
+          curl -L "https://github.com/docker/compose/releases/download/${{ env.DOCKER_COMPOSE_VER }}/docker-compose-linux-${{ env.ARCH_CLASS }}" \
+             -o tools/docker-compose-v2
+          chmod +x tools/docker-compose-v2
+
+      - name: Install flake8
+        # Specify the precise Flake8 version so that we get exactly the same tests as locally
+        # This version must match the one specified in `scp756-221/tool-container/Dockerfile`
+        run: |
+          pip install flake8==4.0.1
+
+      - name: Instantiate template files
+        # For CI, only need ZZ-REG-ID to instantiate s2/standalone/unique_code-tpl.py
+        run: |
+          sed -e "s/ZZ-REG-ID=.*/ZZ-REG-ID=${{ github.repository_owner }}/" cluster/tpl-vars-blank.txt > cluster/tpl-vars.txt
+          make -f k8s-tpl.mak templates
+
+      - name: Run CI test
+        run: |
+          cd ci
+          COMPOSE_PATH=../tools/docker-compose-v2 ./runci.sh v1.1
