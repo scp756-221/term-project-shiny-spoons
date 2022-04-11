@@ -1,0 +1,63 @@
+# Set up an integration test of DB, S1, and S2 using a local
+# DynamoDB.  Assumes a fresh environment where none of the
+# images have been created (or, if an image exists, that it
+# is current).  The DynamoDB keeps all tables in memory,
+# so no tables exist at startup and any tables created will be
+# deleted upon exit.
+#
+services:
+  dynamodb-local:
+    command: "-jar DynamoDBLocal.jar -inMemory"
+    image: "amazon/dynamodb-local:latest"
+    container_name: dynamodb-local
+    ports:
+      - "8000:8000"
+    working_dir: /home/dynamodblocal
+  cmpt756db:
+    build: ../db
+    image: ci_db
+    container_name: cmpt756db
+    ports:
+      - "30002:30002"
+    environment:
+      AWS_REGION: 'ZZ-AWS-REGION'
+      AWS_ACCESS_KEY_ID: 'DUMMY_KEY_ID'
+      AWS_SECRET_ACCESS_KEY: 'DUMMY_ACCESS_ KEY'
+      SVC_LOADER_TOKEN: 'DUMMY_LOADER_TOKEN'
+      DYNAMODB_URL: 'http://dynamodb-local:8000'
+  cmpt756s1:
+    depends_on:
+      - dynamodb-local
+      - cmpt756db
+    build: ../s1
+    image: ci_s1
+    container_name: cmpt756s1
+    ports:
+     - "30000:30000"
+  cmpt756s2:
+    depends_on:
+      - dynamodb-local
+      - cmpt756db
+    build: ../s2/v1
+    image: ci_s2
+    container_name: cmpt756s2
+    ports:
+     - "30001:30001"
+    environment:
+      EXER: v1
+  test:
+    command: "python ci_test.py cmpt756s1 30000 cmpt756s2 30001 ZZ-REG-ID"
+    depends_on:
+      - dynamodb-local
+      - cmpt756db
+      - cmpt756s1
+      - cmpt756s2
+    build: ./v1
+    image: ci_test
+    container_name: test
+    environment:
+      AWS_REGION: 'ZZ-AWS-REGION'
+      AWS_ACCESS_KEY_ID: 'DUMMY_KEY_ID'
+      AWS_SECRET_ACCESS_KEY: 'DUMMY_ACCESS_ KEY'
+      SVC_LOADER_TOKEN: 'DUMMY_LOADER_TOKEN'
+      DYNAMODB_URL: 'http://dynamodb-local:8000'
