@@ -108,23 +108,42 @@ Fixing and redeploying a service. use rollout-{service_name}. e.g below
 /home/k8s# make -f k8s.mak grafana-url
 ```
 
-15. Run Gatling
+15. Run Kiali
+
+#Install Kial using the below command
 
 ```
-/home/k8s# ./tools/gatling.sh 1500 ReadBothVaryingSim
-
-#To stop the Gatling job, enter
-#   $ kill -9 255
-#The Gatling job will continue running until it is stopped via kill -9 or
-#the container is exited.
+make -f k8s-tpl.mak kiali
 ```
 
-copy kill command echoed by Gatling.
-
-15. Stop Amazon EKS cluster
+Once it is installed, execute the below command to generate the url
 
 ```
-make -f eks.mak stop
+make -f k8s-tpl.mak kiali-url
 ```
 
-Todo:
+16. Run Gatling
+
+from you host maching execute the following commands. This will put an instant load of 100 users for each microservice
+
+```
+bash ./gatling-100-user.sh && bash ./gatling-100-music.sh && bash ./gatling-100-metadata.sh
+```
+
+The below command will read the 3 services concurrently at varying rates, by gradually increasing the concurrent users from 1 to 1000 in the next 15 mins
+
+```
+bash ./gatling-1000-users-varying-sim.sh
+```
+
+17. To Terminatre all Gatling containers execute the below commands
+
+```
+./tools/kill-gatling.sh
+```
+
+18. Stop Amazon EKS cluster
+
+```
+/home/k8s# make -f eks.mak stop
+```
