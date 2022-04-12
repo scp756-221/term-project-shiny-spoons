@@ -13,51 +13,61 @@ services:
     ports:
       - "8000:8000"
     working_dir: /home/dynamodblocal
-  cmpt756db:
+  shiny-spoons-db:
     build: ../db
     image: ci_db
-    container_name: cmpt756db
+    container_name: shiny-spoons-db
     ports:
       - "30002:30002"
     environment:
-      AWS_REGION: 'ZZ-AWS-REGION'
-      AWS_ACCESS_KEY_ID: 'DUMMY_KEY_ID'
-      AWS_SECRET_ACCESS_KEY: 'DUMMY_ACCESS_ KEY'
-      SVC_LOADER_TOKEN: 'DUMMY_LOADER_TOKEN'
-      DYNAMODB_URL: 'http://dynamodb-local:8000'
-  cmpt756s1:
+      AWS_REGION: "ZZ-AWS-REGION"
+      AWS_ACCESS_KEY_ID: "DUMMY_KEY_ID"
+      AWS_SECRET_ACCESS_KEY: "DUMMY_ACCESS_ KEY"
+      SVC_LOADER_TOKEN: "DUMMY_LOADER_TOKEN"
+      DYNAMODB_URL: "http://dynamodb-local:8000"
+  shiny-spoons-s1:
     depends_on:
       - dynamodb-local
-      - cmpt756db
+      - shiny-spoons-db
     build: ../s1
     image: ci_s1
-    container_name: cmpt756s1
+    container_name: shiny-spoons-s1
     ports:
-     - "30000:30000"
-  cmpt756s2:
+      - "30000:30000"
+  shiny-spoons-s3:
     depends_on:
       - dynamodb-local
-      - cmpt756db
+      - shiny-spoons-db
+    build: ../s3
+    image: ci_s3
+    container_name: shiny-spoons-s3
+    ports:
+      - "30003:30003"
+  shiny-spoons-s2:
+    depends_on:
+      - dynamodb-local
+      - shiny-spoons-db
     build: ../s2/v1
     image: ci_s2
-    container_name: cmpt756s2
+    container_name: shiny-spoons-s2
     ports:
-     - "30001:30001"
+      - "30001:30001"
     environment:
       EXER: v1
   test:
-    command: "python ci_test.py cmpt756s1 30000 cmpt756s2 30001 ZZ-REG-ID"
+    command: "python ci_test.py shiny-spoons-s1 30000 shiny-spoons-s2 30001 ZZ-REG-ID"
     depends_on:
       - dynamodb-local
-      - cmpt756db
-      - cmpt756s1
-      - cmpt756s2
+      - shiny-spoons-db
+      - shiny-spoons-s1
+      - shiny-spoons-s2
+      - shiny-spoons-s3
     build: ./v1
     image: ci_test
     container_name: test
     environment:
-      AWS_REGION: 'ZZ-AWS-REGION'
-      AWS_ACCESS_KEY_ID: 'DUMMY_KEY_ID'
-      AWS_SECRET_ACCESS_KEY: 'DUMMY_ACCESS_ KEY'
-      SVC_LOADER_TOKEN: 'DUMMY_LOADER_TOKEN'
-      DYNAMODB_URL: 'http://dynamodb-local:8000'
+      AWS_REGION: "ZZ-AWS-REGION"
+      AWS_ACCESS_KEY_ID: "DUMMY_KEY_ID"
+      AWS_SECRET_ACCESS_KEY: "DUMMY_ACCESS_ KEY"
+      SVC_LOADER_TOKEN: "DUMMY_LOADER_TOKEN"
+      DYNAMODB_URL: "http://dynamodb-local:8000"
