@@ -9,7 +9,7 @@ then
   echo " Some available simulation names:"
   echo "   ReadUserSim"
   echo "   ReadMusicSim"
-  echo "   ReadBothVaryingSim"
+  echo "   ReadVaryingSim"
   exit 1
 fi
 

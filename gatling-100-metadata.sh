@@ -5,7 +5,7 @@ docker container run --detach --rm \
   -v ${PWD}/gatling/target:/opt/gatling/target \
   -e CLUSTER_IP=`tools/getip.sh kubectl istio-system svc/istio-ingressgateway` \
   -e USERS=100 \
-  -e SIM_NAME=ReadBothVaryingSim \
+  -e SIM_NAME=ReadMetadataSim \
   --label gatling \
   ghcr.io/scp-2021-jan-cmpt-756/gatling:3.4.2 \
   -s proj756.ReadMetadataSim

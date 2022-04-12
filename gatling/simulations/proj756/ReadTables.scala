@@ -172,11 +172,11 @@ class ReadMetadataSim extends ReadTablesSim {
 }
 
 /*
-  Read both services concurrently at varying rates.
+  Read 3 services concurrently at varying rates.
   Ramp up new users one / 10 s until requested USERS
   is reached for each service.
 */
-class ReadBothVaryingSim extends ReadTablesSim {
+class ReadVaryingSim extends ReadTablesSim {
   val scnReadMV = scenario("ReadMusicVarying")
     .exec(RMusicVarying.rmusic)
 
