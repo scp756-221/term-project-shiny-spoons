@@ -3,10 +3,12 @@
 # Shiny Spoons SFU CMPT 756 Project Repo
 
 1. Instantiate the template files
+
    Fill in the required values in the template variable file
    Copy the file cluster/tpl-vars-blank.txt to cluster/tpl-vars.txt and fill in all the required values in tpl-vars.txt. These include things like your AWS keys, your GitHub signon, and other identifying information. See the comments in that file for details. Note that you will need to have installed Gatling (https://gatling.io/open-source/start-testing/) first, because you will be entering its path in tpl-vars.txt.
 
-2. Use this step only if ZZ-REG-ID is not pointed to `scp756-221`. Update ZZ-REG-ID to `scp756-221` first in tpl-vars.txt DO NOT commit this file
+2. Use this step only if ZZ-REG-ID is not pointed to `scp756-221`.
+   Update ZZ-REG-ID to `scp756-221` first in tpl-vars.txt DO NOT commit this file
 
 ```
 make -f k8s-tpl.mak templates
@@ -124,7 +126,7 @@ make -f k8s-tpl.mak kiali-url
 
 16. Run Gatling
 
-from you host maching execute the following commands. This will put an instant load of 100 users for each microservice
+From you host maching execute the following commands. This will put an instant load of 100 users for each microservice
 
 ```
 bash ./gatling-100-user.sh && bash ./gatling-100-music.sh && bash ./gatling-100-metadata.sh
